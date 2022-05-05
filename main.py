@@ -10,7 +10,6 @@ from flask_login import UserMixin, login_user, LoginManager, login_required, cur
 from sqlalchemy.orm import relationship
 import os
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 Bootstrap(app)
