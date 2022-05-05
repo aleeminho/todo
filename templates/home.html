@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block title %}TODO - aleeminho{% endblock %} {% block body %}
+<div class="todo-title">
+  <h1>TODO</h1>
+</div>
+<div class="container">
+  <div class="feature-button d-flex justify-content-between">
+    <a href="{{ url_for('add') }}"><button class="btn btn-light task-button">+ Add Task</button></a>
+    <a href="{{ url_for('logout') }}"><button class="btn btn-light task-button ms-auto">Logout</button></a>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    {% for todo in todos %}
+    <div class="col-md-4 mb-4">
+      <div class="todo-card">
+        <h3>{{todo.title.title()}}</h3>
+        <p>{{todo.description.capitalize()}}</p>
+        <div class="deadline">
+          <p>Deadline: {{todo.deadline}}</p>
+        </div>
+        <div class="features">
+          <a href="{{ url_for('update', id=todo.id) }}"><button class="btn btn-primary">Update</button></a>
+          <a href="{{ url_for('delete', id=todo.id) }}"><button class="btn btn-danger">Delete</button></a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+body {
+  font-family: 'Montserrat', sans-serif;
+  margin: 0;
+}
+
+h1 {
+  font-weight: 900;
+  margin: 0;
+  text-align: center;
+  padding: 2rem;
+  font-size: 3rem;
+}
+
+.todo-card {
+  border: 1px solid black;
+  padding: 1rem;
+  position: relative;
+  min-height: 14rem;
+  word-break: break-word;
+}
+.todo-card h3 {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+
+.deadline {
+  position: absolute;
+  bottom: 2.4rem;
+}
+.features {
+  position: absolute;
+  bottom: 0.9rem;
+  margin: 0 auto;
+}
+
+.task-button {
+  margin-bottom: 1rem;
+}
+
+.container-add {
+  padding: 3% 20%;
+}

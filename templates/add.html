@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% import 'bootstrap/wtf.html' as wtf %} {% block title %}Add{% endblock %} {% block body %}
+<div class="container-add">
+  <div class="row">
+    <h1>Add A New Task</h1>
+
+    {{ form.hidden_tag() }} {{ wtf.quick_form(form, novalidate=True, button_map = {'submit':"primary"}) }}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "base.html" %} {% import 'bootstrap/wtf.html' as wtf %} {% block title %}Sign Up{% endblock %} {% block body %}
+<div class="container-add">
+  <h1>Sign Up</h1>
+  <a href="{{ url_for('login') }}"><button class="btn btn-light task-button">Login</button></a>
+  {% with messages = get_flashed_messages() %} {% if messages %}
+  <div class="flashes">
+    {% for message in messages %}
+    <p style="color: red">{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %} {% endwith %} {{ form.hidden_tag() }} {{ wtf.quick_form(form, novalidate=True, button_map = {'submit':"primary"}) }}
+</div>
+{% endblock %}
