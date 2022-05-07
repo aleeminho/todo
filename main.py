@@ -11,10 +11,13 @@ from sqlalchemy.orm import relationship
 import os
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+# "memeg"
 Bootstrap(app)
 # DATABASE
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres",'postgresql')
+# 'postgresql://postgres:110724@localhost:5432/todo-app'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -26,21 +29,18 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 class User(UserMixin, db.Model):
-    __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)
     name = Column(String, nullable=False)
-    todos = relationship("Todo", back_populates="users")
+    todos = relationship("Todo", backref="user")
 
 class Todo(db.Model):
-    __tablename__ = 'todos'
     id = Column(Integer, primary_key=True)
     title = Column(String(30), nullable=False)
     description = Column(String(100), nullable=False)
     deadline = Column(String, nullable=False)
-    users_id = Column(Integer, ForeignKey('users.id'))
-    users = relationship("User", back_populates="todos")
+    user_id = Column(Integer, ForeignKey('user.id'))
 
 class TodoForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired(), Length(max=30)])
@@ -65,7 +65,11 @@ with app.app_context():
 def load_user(user_id):
     return User.query.get(user_id)
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
+def page():
+    return redirect(url_for('login'))
+
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = Login()
     user = User.query.filter_by(username=form.username.data).first()
@@ -89,8 +93,8 @@ def logout():
 @app.route('/home')
 @login_required
 def home():
-    all_todos = Todo.query.all()
-    return render_template("home.html", todos=all_todos)
+    user_todo = Todo.query.filter_by(user_id=current_user.get_id()).all()
+    return render_template("home.html", todos=user_todo)
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -115,11 +119,13 @@ def register():
 @app.route('/add', methods=['GET', 'POST'])
 def add():
     form = TodoForm()
+    user_now = User.query.filter_by(id=current_user.get_id()).first()
     if request.method == 'POST' and form.validate():
         new_task = Todo(
             title = form.title.data,
             description = form.description.data,
-            deadline = form.deadline.data
+            deadline = form.deadline.data,
+            user_id = user_now.id
         )
         db.session.add(new_task)
         db.session.commit()
