@@ -12,11 +12,11 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-# "memeg"
+#```
 Bootstrap(app)
 # DATABASE
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("postgres",'postgresql')
-# 'postgresql://postgres:110724@localhost:5432/todo-app'
+# ```
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
